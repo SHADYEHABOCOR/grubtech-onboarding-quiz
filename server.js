@@ -6,7 +6,11 @@ const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const DATA_FILE = path.join(__dirname, 'data', 'responses.json');
+
+// Use /tmp for serverless environments, otherwise use local data folder
+const IS_SERVERLESS = process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME;
+const DATA_DIR = IS_SERVERLESS ? '/tmp/data' : path.join(__dirname, 'data');
+const DATA_FILE = path.join(DATA_DIR, 'responses.json');
 
 // Middleware
 app.use(cors());
@@ -15,11 +19,10 @@ app.use(express.static('public'));
 
 // Ensure data directory exists
 async function ensureDataDirectory() {
-    const dataDir = path.join(__dirname, 'data');
     try {
-        await fs.access(dataDir);
+        await fs.access(DATA_DIR);
     } catch {
-        await fs.mkdir(dataDir, { recursive: true });
+        await fs.mkdir(DATA_DIR, { recursive: true });
     }
 
     try {
