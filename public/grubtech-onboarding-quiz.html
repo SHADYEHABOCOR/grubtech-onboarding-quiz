@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grubtech Onboarding CSAT Survey</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .score-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            display: inline-block;
+            font-weight: 600;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .score-badge:hover {
+            transform: scale(1.05);
+        }
+
+        .question-block {
+            margin-bottom: 35px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .question-block:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transform: translateX(5px);
+        }
+
+        .question-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .points-label {
+            font-size: 14px;
+            color: #667eea;
+            font-weight: 600;
+            background: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 12px;
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+            accent-color: #667eea;
+        }
+
+        .option label {
+            cursor: pointer;
+            flex: 1;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .option.selected {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .scale-options {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .scale-option {
+            flex: 1;
+            min-width: 60px;
+            text-align: center;
+            padding: 15px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .scale-option:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .scale-option input[type="radio"] {
+            display: none;
+        }
+
+        .scale-option.selected {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+
+        .scale-number {
+            font-size: 24px;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .scale-label {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .scale-option.selected .scale-label {
+            color: white;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 16px;
+            resize: vertical;
+            transition: all 0.3s ease;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .current-score {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            color: #667eea;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f0f4ff;
+            border-radius: 12px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 30px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .results {
+            display: none;
+            text-align: center;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .results-score {
+            font-size: 72px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 20px 0;
+        }
+
+        .results-message {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .results-percentage {
+            font-size: 20px;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .feedback-message {
+            padding: 20px;
+            background: #f0f4ff;
+            border-radius: 12px;
+            color: #333;
+            font-size: 16px;
+            line-height: 1.6;
+            margin: 20px 0;
+        }
+
+        .reset-btn {
+            padding: 15px 40px;
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .reset-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .quiz-form.hidden {
+            display: none;
+        }
+
+        .section-header {
+            margin: 40px 0 25px 0;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .section-header h2 {
+            font-size: 24px;
+            color: #333;
+            font-weight: 700;
+        }
+
+        .section-header:first-of-type {
+            margin-top: 0;
+        }
+
+        .text-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .text-input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .required-label {
+            font-size: 12px;
+            color: #dc3545;
+            font-weight: 600;
+            background: #ffe0e0;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .call-script {
+            background: #f0f4ff;
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+
+        .call-script p {
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .call-script p:last-child {
+            margin-bottom: 0;
+        }
+
+        .call-script strong {
+            color: #667eea;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+            }
+
+            .logo {
+                font-size: 24px;
+            }
+
+            .section-header h2 {
+                font-size: 20px;
+            }
+
+            .question-title {
+                font-size: 16px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .scale-options {
+                justify-content: space-between;
+            }
+
+            .scale-option {
+                min-width: 50px;
+                padding: 10px;
+            }
+
+            .scale-number {
+                font-size: 20px;
+            }
+
+            .results-score {
+                font-size: 56px;
+            }
+
+            .call-script {
+                padding: 20px;
+                font-size: 14px;
+            }
+
+            .call-script p {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">grubtech</div>
+            <div class="subtitle">Onboarding CSAT Survey</div>
+        </div>
+
+        <form id="quizForm" class="quiz-form">
+            <!-- Section 1: Customer Information -->
+            <div class="section-header">
+                <h2>Customer Information</h2>
+            </div>
+
+            <div class="question-block">
+                <div class="question-title">
+                    <span>Customer Name</span>
+                    <span class="required-label">Required</span>
+                </div>
+                <input type="text" name="customerName" id="customerName" class="text-input" placeholder="Enter customer name" required>
+            </div>
+
+            <div class="question-block">
+                <div class="question-title">
+                    <span>Brand / Store Name</span>
+                    <span class="required-label">Required</span>
+                </div>
+                <input type="text" name="brandName" id="brandName" class="text-input" placeholder="Enter brand or store name" required>
+            </div>
+
+            <div class="question-block">
+                <div class="question-title">
+                    <span>Onboarding Specialist</span>
+                    <span class="required-label">Required</span>
+                </div>
+                <input type="text" name="onboardingSpecialist" id="onboardingSpecialist" class="text-input" placeholder="Enter onboarding specialist name" required>
+            </div>
+
+            <div class="question-block">
+                <div class="question-title">
+                    <span>Called By (Leader)</span>
+                    <span class="required-label">Required</span>
+                </div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(this)">
+                        <input type="radio" name="calledBy" value="Dina Abdelaziz" id="leader1" required>
+                        <label for="leader1">Dina Abdelaziz</label>
+                    </div>
+                    <div class="option" onclick="selectOption(this)">
+                        <input type="radio" name="calledBy" value="Sara Khalil" id="leader2">
+                        <label for="leader2">Sara Khalil</label>
+                    </div>
+                    <div class="option" onclick="selectOption(this)">
+                        <input type="radio" name="calledBy" value="Shimaa Mansour" id="leader3">
+                        <label for="leader3">Shimaa Mansour</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-block">
+                <div class="question-title">
+                    <span>POS Name</span>
+                    <span class="required-label">Required</span>
+                </div>
+                <input type="text" name="posName" id="posName" class="text-input" placeholder="Enter POS name" required>
+            </div>
+
+            <!-- Section 2: Call Script -->
+            <div class="section-header">
+                <h2>Call Script</h2>
+            </div>
+
+            <div class="call-script">
+                <p>Hello <strong>[Customer Name]</strong>, this is <strong>[Your Name]</strong> from Grubtech's Customer Success Team.</p>
+                <p>I hope you're doing well. I'm reaching out to check how your onboarding experience went with us — this helps us continuously improve our service and ensure you're fully satisfied before moving into the support phase.</p>
+                <p>It'll just take a few minutes — may I go ahead?</p>
+            </div>
+
+            <!-- Section 3: Survey Questions -->
+            <div class="section-header">
+                <h2>Survey Questions</h2>
+            </div>
+
+            <!-- Question 1 -->
+            <div class="question-block">
+                <div class="question-title">
+                    <span>1. How satisfied are you with your onboarding experience?</span>
+                    <span class="points-label">5 points</span>
+                </div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(this)">
+                        <input type="radio" name="q1" value="5" id="q1a" required>
+                        <label for="q1a">Very satisfied</label>
+                    </div>
+                    <div class="option" onclick="selectOption(this)">
+                        <input type="radio" name="q1" value="4" id="q1b">
+                        <label for="q1b">Somewhat satisfied</label>
+                    </div>
+                    <div class="option" onclick="selectOption(this)">
+                        <input type="radio" name="q1" value="3" id="q1c">
+                        <label for="q1c">Neither satisfied nor dissatisfied</label>
+                    </div>
+                    <div class="option" onclick="selectOption(this)">
+                        <input type="radio" name="q1" value="2" id="q1d">
+                        <label for="q1d">Somewhat dissatisfied</label>
+                    </div>
+                    <div class="option" onclick="selectOption(this)">
+                        <input type="radio" name="q1" value="1" id="q1e">
+                        <label for="q1e">Very dissatisfied</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="question-block">
+                <div class="question-title">
+                    <span>2. How satisfied are you with the communication and support from your onboarding specialist?</span>
+                    <span class="points-label">5 points</span>
+                </div>
+                <div class="scale-options">
+                    <div class="scale-option" onclick="selectScale(this)">
+                        <input type="radio" name="q2" value="1" id="q2a" required>
+                        <label for="q2a">
+                            <span class="scale-number">1</span>
+                            <span class="scale-label">Poor</span>
+                        </label>
+                    </div>
+                    <div class="scale-option" onclick="selectScale(this)">
+                        <input type="radio" name="q2" value="2" id="q2b">
+                        <label for="q2b">
+                            <span class="scale-number">2</span>
+                            <span class="scale-label">Fair</span>
+                        </label>
+                    </div>
+                    <div class="scale-option" onclick="selectScale(this)">
+                        <input type="radio" name="q2" value="3" id="q2c">
+                        <label for="q2c">
+                            <span class="scale-number">3</span>
+                            <span class="scale-label">Good</span>
+                        </label>
+                    </div>
+                    <div class="scale-option" onclick="selectScale(this)">
+                        <input type="radio" name="q2" value="4" id="q2d">
+                        <label for="q2d">
+                            <span class="scale-number">4</span>
+                            <span class="scale-label">Very Good</span>
+                        </label>
+                    </div>
+                    <div class="scale-option" onclick="selectScale(this)">
+                        <input type="radio" name="q2" value="5" id="q2e">
+                        <label for="q2e">
+                            <span class="scale-number">5</span>
+                            <span class="scale-label">Excellent</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="question-block">
+                <div class="question-title">
+                    <span>3. Did the onboarding timeline meet your expectations?</span>
+                    <span class="points-label">5 points</span>
+                </div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(this)">
+                        <input type="radio" name="q3" value="5" id="q3a" required>
+                        <label for="q3a">Yes</label>
+                    </div>
+                    <div class="option" onclick="selectOption(this)">
+                        <input type="radio" name="q3" value="3" id="q3b">
+                        <label for="q3b">Somewhat</label>
+                    </div>
+                    <div class="option" onclick="selectOption(this)">
+                        <input type="radio" name="q3" value="0" id="q3c">
+                        <label for="q3c">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="question-block">
+                <div class="question-title">
+                    <span>4. Was the integration between your POS/ERP and delivery platforms smooth?</span>
+                    <span class="points-label">5 points</span>
+                </div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(this)">
+                        <input type="radio" name="q4" value="5" id="q4a" required>
+                        <label for="q4a">Yes</label>
+                    </div>
+                    <div class="option" onclick="selectOption(this)">
+                        <input type="radio" name="q4" value="3" id="q4b">
+                        <label for="q4b">Somewhat</label>
+                    </div>
+                    <div class="option" onclick="selectOption(this)">
+                        <input type="radio" name="q4" value="0" id="q4c">
+                        <label for="q4c">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="question-block">
+                <div class="question-title">
+                    <span>5. Would you recommend grubtech to your network?</span>
+                    <span class="points-label">5 points</span>
+                </div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(this)">
+                        <input type="radio" name="q5" value="5" id="q5a" required>
+                        <label for="q5a">Yes</label>
+                    </div>
+                    <div class="option" onclick="selectOption(this)">
+                        <input type="radio" name="q5" value="3" id="q5b">
+                        <label for="q5b">Somewhat</label>
+                    </div>
+                    <div class="option" onclick="selectOption(this)">
+                        <input type="radio" name="q5" value="0" id="q5c">
+                        <label for="q5c">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 6 -->
+            <div class="question-block">
+                <div class="question-title">
+                    <span>6. What can we do to improve the onboarding process in the future?</span>
+                    <span class="points-label">5 points</span>
+                </div>
+                <textarea
+                    name="q6"
+                    id="q6"
+                    placeholder="Share your thoughts and suggestions..."
+                    required
+                    minlength="10"></textarea>
+            </div>
+
+            <div class="current-score" id="currentScore">
+                Current Score: <span id="scoreValue">0</span> / 30 (<span id="percentageValue">0</span>%)
+            </div>
+
+            <button type="submit" class="submit-btn">Submit Survey</button>
+        </form>
+
+        <div class="results" id="results">
+            <div class="results-message" id="resultsMessage">Thank you for your feedback!</div>
+            <div class="results-score" id="finalScore">0/30</div>
+            <div class="results-percentage" id="finalPercentage">0%</div>
+            <div class="feedback-message" id="feedbackMessage"></div>
+            <button class="reset-btn" onclick="resetQuiz()">Take Survey Again</button>
+        </div>
+    </div>
+
+    <script>
+        let currentScore = 0;
+
+        // Select option for radio buttons
+        function selectOption(element) {
+            const radio = element.querySelector('input[type="radio"]');
+            radio.checked = true;
+
+            // Remove selected class from siblings
+            const siblings = element.parentElement.querySelectorAll('.option');
+            siblings.forEach(sib => sib.classList.remove('selected'));
+
+            // Add selected class to clicked option
+            element.classList.add('selected');
+
+            calculateScore();
+        }
+
+        // Select scale option
+        function selectScale(element) {
+            const radio = element.querySelector('input[type="radio"]');
+            radio.checked = true;
+
+            // Remove selected class from siblings
+            const siblings = element.parentElement.querySelectorAll('.scale-option');
+            siblings.forEach(sib => sib.classList.remove('selected'));
+
+            // Add selected class to clicked option
+            element.classList.add('selected');
+
+            calculateScore();
+        }
+
+        // Calculate score as user answers
+        function calculateScore() {
+            currentScore = 0;
+
+            // Questions 1-5
+            for (let i = 1; i <= 5; i++) {
+                const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                if (selected) {
+                    currentScore += parseInt(selected.value);
+                }
+            }
+
+            // Question 6 (text input) - 5 points if answered with at least 10 characters
+            const q6 = document.getElementById('q6').value.trim();
+            if (q6.length >= 10) {
+                currentScore += 5;
+            }
+
+            updateScoreDisplay();
+        }
+
+        // Update score display
+        function updateScoreDisplay() {
+            const percentage = Math.round((currentScore / 30) * 100);
+            document.getElementById('scoreValue').textContent = currentScore;
+            document.getElementById('percentageValue').textContent = percentage;
+        }
+
+        // Add event listener to textarea
+        document.getElementById('q6').addEventListener('input', calculateScore);
+
+        // Submit to backend API
+        async function submitToBackend(responses, finalScore, percentage) {
+            try {
+                const response = await fetch('/api/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(responses)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    console.log('Successfully submitted to backend:', data);
+                    showResults(finalScore, percentage, responses);
+                } else {
+                    console.error('Backend submission failed:', data);
+                    // Still show results even if backend fails
+                    alert('Response saved locally, but server submission failed. Please contact support.');
+                    showResults(finalScore, percentage, responses);
+                }
+            } catch (error) {
+                console.error('Error submitting to backend:', error);
+                // Still show results even if backend fails
+                alert('Response saved locally, but could not connect to server. Please contact support.');
+                showResults(finalScore, percentage, responses);
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Calculate final score
+            calculateScore();
+            const finalScore = currentScore;
+            const percentage = Math.round((finalScore / 30) * 100);
+
+            // Collect responses
+            const responses = {
+                timestamp: new Date().toISOString(),
+                // Customer Information
+                customerName: document.getElementById('customerName').value,
+                brandName: document.getElementById('brandName').value,
+                onboardingSpecialist: document.getElementById('onboardingSpecialist').value,
+                calledBy: document.querySelector('input[name="calledBy"]:checked').value,
+                posName: document.getElementById('posName').value,
+                // Survey Questions
+                q1: document.querySelector('input[name="q1"]:checked').value,
+                q1_text: document.querySelector('input[name="q1"]:checked').nextElementSibling.textContent,
+                q2: document.querySelector('input[name="q2"]:checked').value,
+                q3: document.querySelector('input[name="q3"]:checked').value,
+                q3_text: document.querySelector('input[name="q3"]:checked').nextElementSibling.textContent,
+                q4: document.querySelector('input[name="q4"]:checked').value,
+                q4_text: document.querySelector('input[name="q4"]:checked').nextElementSibling.textContent,
+                q5: document.querySelector('input[name="q5"]:checked').value,
+                q5_text: document.querySelector('input[name="q5"]:checked').nextElementSibling.textContent,
+                q6: document.getElementById('q6').value,
+                totalScore: finalScore,
+                percentage: percentage
+            };
+
+            // Store in localStorage (backup)
+            const allResponses = JSON.parse(localStorage.getItem('grubtechResponses') || '[]');
+            allResponses.push(responses);
+            localStorage.setItem('grubtechResponses', JSON.stringify(allResponses));
+
+            // Log to console
+            console.log('Survey Response:', responses);
+            console.log('All Responses:', allResponses);
+
+            // Submit to backend API
+            submitToBackend(responses, finalScore, percentage);
+        });
+
+        // Show results
+        function showResults(score, percentage, responses) {
+            document.getElementById('quizForm').classList.add('hidden');
+            document.getElementById('results').classList.add('show');
+
+            document.getElementById('finalScore').textContent = `${score}/30`;
+            document.getElementById('finalPercentage').textContent = `${percentage}%`;
+
+            // Generate feedback message based on score
+            let message = '';
+            if (percentage >= 90) {
+                message = 'Excellent! We\'re thrilled to hear you had an outstanding onboarding experience. Your positive feedback helps us continue delivering exceptional service to all our clients.';
+            } else if (percentage >= 75) {
+                message = 'Great! We\'re glad your onboarding experience was positive overall. We\'ll review your feedback to make our process even better.';
+            } else if (percentage >= 60) {
+                message = 'Thank you for your feedback. We see there\'s room for improvement in our onboarding process. Your suggestions will help us enhance the experience for future clients.';
+            } else if (percentage >= 40) {
+                message = 'We appreciate your honest feedback. We\'re sorry your onboarding experience didn\'t meet expectations. Our team will review your responses to address the issues you\'ve raised.';
+            } else {
+                message = 'We sincerely apologize that your onboarding experience fell short. Your feedback is crucial, and we\'re committed to making immediate improvements. A team member will reach out to you shortly.';
+            }
+
+            document.getElementById('feedbackMessage').textContent = message;
+        }
+
+        // Reset quiz
+        function resetQuiz() {
+            document.getElementById('quizForm').reset();
+            document.getElementById('quizForm').classList.remove('hidden');
+            document.getElementById('results').classList.remove('show');
+
+            // Remove all selected classes
+            document.querySelectorAll('.option.selected, .scale-option.selected').forEach(el => {
+                el.classList.remove('selected');
+            });
+
+            currentScore = 0;
+            updateScoreDisplay();
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Initialize
+        updateScoreDisplay();
+    </script>
+</body>
+</html>
