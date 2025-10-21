@@ -1,0 +1,148 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Grubtech Quiz Backend - Serverless Application
+
+Globals:
+  Function:
+    Timeout: 30
+    Runtime: nodejs18.x
+    MemorySize: 256
+    Environment:
+      Variables:
+        DYNAMODB_TABLE: !Ref QuizResponsesTable
+
+Resources:
+  # DynamoDB Table
+  QuizResponsesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: grubtech-quiz-responses
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES
+
+  # API Gateway
+  QuizApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+      Cors:
+        AllowMethods: "'GET,POST,DELETE,OPTIONS'"
+        AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+        AllowOrigin: "'*'"
+
+  # Lambda Function - Submit Response
+  SubmitFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: aws-lambda/
+      Handler: submit.handler
+      Description: Submit quiz response to DynamoDB
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref QuizResponsesTable
+      Events:
+        Submit:
+          Type: Api
+          Properties:
+            RestApiId: !Ref QuizApi
+            Path: /api/submit
+            Method: POST
+
+  # Lambda Function - Get Responses
+  GetResponsesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: aws-lambda/
+      Handler: get-responses.handler
+      Description: Get all quiz responses or single response
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref QuizResponsesTable
+      Events:
+        GetAll:
+          Type: Api
+          Properties:
+            RestApiId: !Ref QuizApi
+            Path: /api/responses
+            Method: GET
+        GetOne:
+          Type: Api
+          Properties:
+            RestApiId: !Ref QuizApi
+            Path: /api/responses/{id}
+            Method: GET
+
+  # Lambda Function - Delete Response
+  DeleteResponseFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: aws-lambda/
+      Handler: delete-response.handler
+      Description: Delete a quiz response
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref QuizResponsesTable
+      Events:
+        Delete:
+          Type: Api
+          Properties:
+            RestApiId: !Ref QuizApi
+            Path: /api/responses/{id}
+            Method: DELETE
+
+  # Lambda Function - Get Statistics
+  GetStatsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: aws-lambda/
+      Handler: get-stats.handler
+      Description: Get quiz statistics
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref QuizResponsesTable
+      Events:
+        Stats:
+          Type: Api
+          Properties:
+            RestApiId: !Ref QuizApi
+            Path: /api/stats
+            Method: GET
+
+  # Lambda Function - Export CSV
+  ExportCsvFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: aws-lambda/
+      Handler: export-csv.handler
+      Description: Export quiz responses to CSV
+      Timeout: 60
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref QuizResponsesTable
+      Events:
+        Export:
+          Type: Api
+          Properties:
+            RestApiId: !Ref QuizApi
+            Path: /api/export/csv
+            Method: GET
+
+Outputs:
+  ApiUrl:
+    Description: "API Gateway endpoint URL"
+    Value: !Sub "https://${QuizApi}.execute-api.${AWS::Region}.amazonaws.com/prod"
+
+  DynamoDBTableName:
+    Description: "DynamoDB table name"
+    Value: !Ref QuizResponsesTable
+
+  ApiId:
+    Description: "API Gateway ID"
+    Value: !Ref QuizApi

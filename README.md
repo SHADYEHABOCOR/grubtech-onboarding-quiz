@@ -37,17 +37,47 @@ npm run dev
 
 ## Deployment Options
 
-### Option 1: Deploy to Vercel (Recommended)
+### 🌟 Option 1: AWS Free Tier (RECOMMENDED - Best Backend Solution)
 
-1. **Install Vercel CLI**
+**Perfect for production! Real database, unlimited scaling, $0/month**
+
+See complete guide: **[AWS_DEPLOY.md](AWS_DEPLOY.md)**
+
+**Quick Deploy:**
 ```bash
-npm install -g vercel
+./deploy-aws.sh
 ```
 
-2. **Deploy**
-```bash
-vercel
-```
+**Includes:**
+- ✅ AWS Lambda (1M requests/month FREE)
+- ✅ DynamoDB (25GB storage FREE forever)
+- ✅ API Gateway
+- ✅ Real persistent database
+- ✅ Professional infrastructure
+
+### Option 2: Railway.app
+
+**Best traditional hosting option**
+
+See: **[SETUP_GUIDE.md](SETUP_GUIDE.md#method-1-railwayapp-easiest---recommended)**
+
+1. Go to https://railway.app
+2. Deploy from GitHub
+3. Done!
+
+### Option 3: Netlify (Serverless Functions)
+
+**Good for quick deployment**
+
+See: **[NETLIFY_DEPLOY.md](NETLIFY_DEPLOY.md)**
+
+1. Go to https://app.netlify.com
+2. Import from GitHub
+3. Deploy
+
+### Option 4: Render.com
+
+See: **[SETUP_GUIDE.md](SETUP_GUIDE.md#method-2-rendercom-also-good)**
 
 3. **Follow the prompts**
 - Select your project

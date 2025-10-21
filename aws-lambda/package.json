@@ -1,0 +1,10 @@
+{
+  "name": "grubtech-quiz-lambda",
+  "version": "1.0.0",
+  "description": "AWS Lambda functions for Grubtech Quiz",
+  "main": "submit.js",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.450.0",
+    "@aws-sdk/lib-dynamodb": "^3.450.0"
+  }
+}
